@@ -19,11 +19,12 @@ def main():
         model = torch.hub.load('ultralytics/yolov5', 'yolov5s')
 
         capture = cv2.VideoCapture(input_filename)
+
         img_array = []
         obj_crops_array = []
 
         if not capture.isOpened():
-            print("Unable to open:" + input_filename)
+            print("Unable to open:", input_filename)
             exit(0)
 
         while capture.isOpened():
@@ -57,25 +58,20 @@ def main():
                             obj_crops_array.append(shift_img)
 
                     if len(obj_crops_array) == 1:
-                        print("Found 1 " + object_class)
-                        cv2.imshow("Video", obj_crops_array[0])
-                        cv2.waitKey(1)
+                        print("Found 1", object_class)
 
                         img_array.append(obj_crops_array[0])
                         obj_crops_array.clear()
 
                     elif len(obj_crops_array) > 1:
                         v = cv2.addWeighted(obj_crops_array[0], 1, obj_crops_array[1], 1, 0)
-                        print("Found " + str(len(obj_crops_array)) + " object of class " + object_class)
+                        print("Found", str(len(obj_crops_array)), "objects of class", object_class)
 
                         for i in range(2, len(obj_crops_array)):
                             v = cv2.addWeighted(v, 1, obj_crops_array[i], 1, 0)
 
                         img_array.append(v)
                         obj_crops_array.clear()
-
-                        cv2.imshow("Video", v)
-                        cv2.waitKey(1)
 
             else:
                 print("No video detected...")
