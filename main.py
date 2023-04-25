@@ -36,7 +36,7 @@ def main():
                 imgRGB = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 
                 detections = model(imgRGB)
-                img_array = functions.handle_detections(img, detections, object_class)
+                img_array = img_array + functions.handle_detections(img, detections, object_class)
 
             else:
                 print("No video detected...")
