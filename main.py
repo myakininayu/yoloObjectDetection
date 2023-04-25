@@ -67,6 +67,11 @@ def main():
         capture.release()
         cv2.destroyAllWindows()
 
+        # create a new video with cropped objects
+        out = cv2.VideoWriter(output_filename, cv2.VideoWriter_fourcc(*'mp4v'), 15, (width, height))
+        for i in range(len(img_array)):
+            out.write(img_array[i])
+        out.release()
 
 if __name__ == '__main__':
     main()
