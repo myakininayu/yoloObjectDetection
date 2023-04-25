@@ -11,7 +11,7 @@ pip install -r requirements.txt
 ```bash
 # expected 3 parameters
 # python main.py filepath class
-python main.py 1.mp4 cat 
+python main.py samples/1.mp4 cat 
 ```
 In console you'll see logs (whether video is detected and objects are found).
 After detecting you'll see a new videofile consisting of cropped images (output_filename.mp4 = input_filename + object_class.mp4)
