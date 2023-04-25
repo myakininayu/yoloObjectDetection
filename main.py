@@ -19,6 +19,8 @@ def main():
         model = torch.hub.load('ultralytics/yolov5', 'yolov5s')
 
         capture = cv2.VideoCapture(input_filename)
+        capture.set(cv2.CAP_PROP_FPS, 25)
+        height, width = 1000, 1200
 
         img_array = []
         obj_crops_array = []
@@ -31,6 +33,7 @@ def main():
             ret, img = capture.read()
 
             if ret:
+                height, width = img.shape[:2]
                 imgRGB = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 
                 detections = model(imgRGB)
@@ -50,7 +53,6 @@ def main():
                             crop_img = img[y1:y2, x1:x2]
 
                             # shift cropped object
-                            height, width = img.shape[:2]
                             translation_matrix = np.float32([[1, 0, x1], [0, 1, y1]])
                             shift_img = cv2.warpAffine(crop_img, translation_matrix, (width, height))
 
@@ -81,10 +83,11 @@ def main():
         cv2.destroyAllWindows()
 
         # create a new video with cropped objects
-        out = cv2.VideoWriter(output_filename, cv2.VideoWriter_fourcc(*'mp4v'), 15, (width, height))
+        out = cv2.VideoWriter(output_filename, cv2.VideoWriter_fourcc(*'mp4v'), 25, (width, height))
         for i in range(len(img_array)):
             out.write(img_array[i])
         out.release()
+
 
 if __name__ == '__main__':
     main()
